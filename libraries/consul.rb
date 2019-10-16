@@ -13,7 +13,7 @@ class ConsulCluster < Inspec.resource(1)
 
   def initialize(url, token)
     @url = url
-    @master_token = token
+    @headers = {'x-consul-token': token}
 
     query = inspec.http(url)
     begin
@@ -28,7 +28,7 @@ class ConsulCluster < Inspec.resource(1)
   end
 
   def allowed_to_list_acls?
-      query = inspec.http("#{@url}/v1/acl/list?token=#{@master_token}")
+      query = inspec.http("#{@url}/v1/acl/list", headers: @headers)
       query.status == 200
   end
 
