@@ -4,6 +4,7 @@ class NomadJob < Inspec.resource(1)
   example "
     describe nomad_job('http://localhost:4646', 'test_job') do
       it { should be_running }
+      its { job_status }
     end
   "
 
@@ -20,8 +21,14 @@ class NomadJob < Inspec.resource(1)
   end
 
   def running?
-    job = http_json("#{@url}/v1/job/#{@job_name}")
+    job = get_job
     job['Status'] == 'running'
+  end
+
+  def job_status
+    job = get_job
+    print_allocation_logs(job['ID'])
+    job_status = job['Status']
   end
 
   def to_s
@@ -29,6 +36,24 @@ class NomadJob < Inspec.resource(1)
   end
 
   private
+
+  def get_job
+    job = http_json("#{@url}/v1/job/#{@job_name}")
+  end
+
+  def print_allocation_logs(job_id)
+    allocations = http_json("#{@url}/v1/job/#{job_id}/allocations")
+    allocations.each do |allocation|
+        task_states = allocation['TaskStates']
+        task_states.each do |task_state|
+            puts "Events for task #{task_state[0]} in allocation #{allocation['ID']}:"
+            events = task_state[1]['Events']
+            events.each do |event|
+                puts "Event #{event['Type']} with message: #{event['DriverMessage']}"
+            end
+        end
+    end
+  end
 
   def http_json(url)
     query = inspec.http(url)
