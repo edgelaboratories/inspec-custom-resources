@@ -45,10 +45,10 @@ class NomadJob < Inspec.resource(1)
     allocations.each do |allocation|
         task_states = allocation['TaskStates']
         task_states.each do |task_name, task_state|
-            puts "Events for task #{task_name} in allocation #{allocation['ID']}:"
+            puts " Events for task #{task_name} in allocation #{allocation['ID']}:"
             events = task_state['Events']
             events.each do |event|
-                puts "Event #{event['Type']} with message: #{event['DriverMessage']}"
+                puts "  Event '#{event['Type']}' with message: #{event['DriverMessage']}"
             end
         end
     end
