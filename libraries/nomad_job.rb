@@ -4,7 +4,7 @@ class NomadJob < Inspec.resource(1)
   example "
     describe nomad_job('http://localhost:4646', 'test_job') do
       it { should be_running }
-      its { status }
+      its('status') { should eq 'running' }
     end
   "
 
