@@ -1,10 +1,10 @@
 class AWSVpcEndpoint < Inspec.resource(1)
   name 'aws_vpc_endpoint'
-  desc 'Test the configuration of a VPC endpoint.'
+  desc 'Test the configuration of a VPC endpoint. https://github.com/inspec/inspec-aws/issues/21'
   example "
     describe aws_vpc_endpoint('vpce-1234') do
       it { should exist }
-      its('status') { should eq 'available' }
+      its('state') { should eq 'available' }
       its('vpc_id') { should eq 'vpc-00000' }
       its('endpoint_type') { should eq 'Interface' }
       its('service_name') { should eq 'com.amazonaws.ap-southeast-2.s3' }
@@ -25,7 +25,7 @@ class AWSVpcEndpoint < Inspec.resource(1)
     @vpc_endpoint != nil
   end
 
-  def status
+  def state
     @vpc_endpoint.state
   end
 
