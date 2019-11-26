@@ -2,12 +2,9 @@ class AWSRouteTableAssociation < Inspec.resource(1)
   name 'aws_route_table_association'
   desc 'Test the configuration of a class AWS Route Table Association'
   example "
-    describe aws_vpc_endpoint('rtb-1234', 'rtbassoc-1234') do
+    describe aws_route_table_association('rtb-1234', 'rtbassoc-1234') do
       it { should exist }
-      it { should be_main }
-      its('id') { should eq 'rtbassoc-1234' }
-      its('subnet_id') { should eq 'subnet-1234' }
-      its('route_table_id') { should eq 'rtb-1234' }
+      its('subnet_id') { should be_in public_subnets }
     end
   "
 
@@ -50,6 +47,7 @@ class AWSRouteTableAssociation < Inspec.resource(1)
     associations.each do |assoc|
       if assoc['route_table_association_id'] == route_table_association_id
         association = assoc
+        break
       end
     end
     association
