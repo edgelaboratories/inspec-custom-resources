@@ -2,7 +2,7 @@ class AWSRouteTableAssociation < Inspec.resource(1)
   name 'aws_route_table_association'
   desc 'Test the configuration of a class AWS Route Table Association'
   example "
-    describe aws_route_table_association('rtb-1234', 'rtbassoc-1234') do
+    describe aws_route_table_association('rtbassoc-1234') do
       it { should exist }
       its('subnet_id') { should be_in public_subnets }
     end
