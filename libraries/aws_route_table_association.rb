@@ -8,9 +8,9 @@ class AWSRouteTableAssociation < Inspec.resource(1)
     end
   "
 
-  def initialize(route_table_id, route_table_association_id)
+  def initialize(route_table_association_id)
     @route_table_association_id = route_table_association_id
-    @route_table_association = get_route_table_association(route_table_id, route_table_association_id)
+    @route_table_association = get_route_table_association(route_table_association_id)
   end
 
   def to_s
@@ -39,15 +39,17 @@ class AWSRouteTableAssociation < Inspec.resource(1)
 
   private
 
-  def get_route_table_association(route_table_id, route_table_association_id)
+  def get_route_table_association(route_table_association_id)
     association = nil
     ec2 = Aws::EC2::Client.new
-    route_table = ec2.describe_route_tables(route_table_ids: [route_table_id]).route_tables[0]
-    associations = route_table.associations
-    associations.each do |assoc|
-      if assoc['route_table_association_id'] == route_table_association_id
-        association = assoc
-        break
+    route_tables = ec2.describe_route_tables().route_tables
+    route_tables.each do |route_table|
+      associations = route_table.associations
+      associations.each do |assoc|
+        if assoc['route_table_association_id'] == route_table_association_id
+          association = assoc
+          break
+        end
       end
     end
     association
