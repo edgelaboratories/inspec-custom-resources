@@ -27,6 +27,7 @@ class NomadNodes < Inspec.resource(1)
   filter = FilterTable.create
       .register_column(:node_class, field: "NodeClass")
       .register_column(:status,     field: "Status")
+      .register_column(:name,       field: "Name")
       .install_filter_methods_on_resource(self, :filter_nodes)
 
   def to_s
