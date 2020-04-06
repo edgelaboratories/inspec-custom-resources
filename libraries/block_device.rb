@@ -18,8 +18,8 @@ class BlockDevice < Inspec.resource(1)
   end
 
   def size_gb
-    lsblk = inspec.command("lsblk --noheadings --output SIZE --raw #{@device}")
-    lsblk.stdout.strip.to_i
+    lsblk = inspec.command("lsblk -b --noheadings --output SIZE --raw #{@device}")
+    return (lsblk.stdout.strip.to_i / 1024**3).ceil()
   end
 
   def to_s
