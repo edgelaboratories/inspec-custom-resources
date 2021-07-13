@@ -6,24 +6,3 @@ copyright_email: jballet@edgelab.ch
 license: MIT
 summary: Custom InSpec resources from Edgelab
 version: 1.0.0
-
-inputs:
-  - name: consul_http_addr
-    type: string
-    value: http://localhost:8500
-
-  - name: minimum_servers
-    type: numeric
-    value: 3
-
-  - name: datacenter
-    type: string
-    value: dc1
-
-  - name: nomad_addr
-    type: string
-    value: http://nomad.service.consul:4646
-
-  - name: nomad_token
-    type: string
-    value: ""
